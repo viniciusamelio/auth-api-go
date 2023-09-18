@@ -10,10 +10,11 @@ type DefaultAuthRepository struct {
 
 func (this DefaultAuthRepository) SignIn(credentials domain.Credentials) (domain.User, error) {
 
-	err, user := this.DatabaseDatasource.Save("users", credentials)
-	if err != nil {
-		return domain.User{}, err
+	result := this.DatabaseDatasource.Save("users", credentials)
+	if result.Failed {
+		return domain.User{}, result.Errors[0]
 	}
+	user := result.Data[0].(map[string]string)
 	uuid := domain.Uuid{}
 	uuid.Set(user["id"])
 

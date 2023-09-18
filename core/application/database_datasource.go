@@ -1,10 +1,16 @@
 package application
 
 type DatabaseDatasource interface {
-	Save(collection string, data interface{}) (error error, value map[string]string)
-	Delete(collection string, id string) error
-	DeleteWhere(collection string, where QueryFilter) error
-	Select(collection string, where QueryFilter) (error, interface{})
+	Save(collection string, data interface{}) QueryResult
+	Delete(collection string, id string) QueryResult
+	DeleteWhere(collection string, where QueryFilter) QueryResult
+	Select(collection string, where QueryFilter) QueryResult
+}
+
+type QueryResult struct {
+	Failed bool
+	Errors []error
+	Data   []interface{}
 }
 
 type QueryFilter struct {
