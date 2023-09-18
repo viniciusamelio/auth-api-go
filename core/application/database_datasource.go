@@ -1,9 +1,9 @@
 package application
 
 type DatabaseDatasource interface {
-	Save(collection string, data interface{}) QueryResult
-	Delete(collection string, id string) QueryResult
-	DeleteWhere(collection string, where QueryFilter) QueryResult
+	Save(data map[string]interface{}) QueryResult
+	Delete(data interface{}, id string) QueryResult
+	DeleteWhere(data interface{}, where QueryFilter) QueryResult
 	Select(collection string, where QueryFilter) QueryResult
 }
 

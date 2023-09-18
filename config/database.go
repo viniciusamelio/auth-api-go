@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	Database *gorm.DB
+	Database database.GoOrmDatabase
 )
 
 func InitializeDatabase() {
@@ -23,6 +23,5 @@ func InitializeDatabase() {
 
 	db.AutoMigrate(&database.User{})
 	db.AutoMigrate(&database.Session{})
-
-	Database = db
+	Database = database.GoOrmDatabase{DB: db}
 }
