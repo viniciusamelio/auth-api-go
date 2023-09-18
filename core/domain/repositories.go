@@ -1,4 +1,4 @@
-package core
+package domain
 
 type AuthRepository interface {
 	SignIn(credentials Credentials) (User, error)

@@ -1,4 +1,4 @@
-package core
+package domain
 
 type AuthenticationService interface {
 	Authenticate(credentials Credentials) (Session, error)

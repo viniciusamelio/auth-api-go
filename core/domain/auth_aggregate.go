@@ -1,6 +1,6 @@
-package core
+package domain
 
-type AggregateRoot struct {
+type AuthAggregate struct {
 	AuthenticationService AuthenticationService
 	SessionService        SessionService
 	Session               Session
