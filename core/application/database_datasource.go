@@ -1,35 +1,15 @@
 package application
 
+import "auth_api/config/database"
+
 type DatabaseDatasource interface {
-	Save(data map[string]interface{}) QueryResult
-	Delete(data interface{}, id string) QueryResult
-	DeleteWhere(data interface{}, where QueryFilter) QueryResult
-	Select(collection string, where QueryFilter) QueryResult
+	Save(data database.Schema) QueryResult[database.Schema]
+	Delete(data database.Schema, id string) QueryResult[database.Schema]
+	Select(data database.Schema, where string, args ...interface{}) QueryResult[database.Schema]
 }
 
-type QueryResult struct {
+type QueryResult[T database.Schema] struct {
 	Failed bool
 	Errors []error
-	Data   []interface{}
+	Data   []T
 }
-
-type QueryFilter struct {
-	Field            string
-	Value            interface{}
-	Operator         string
-	AggregateFilters []AggregateFilters
-}
-
-type AggregateFilters struct {
-	Field           string
-	Operator        string
-	Value           interface{}
-	AggregationType AggregateType
-}
-
-type AggregateType string
-
-const (
-	And AggregateType = "AND"
-	Or                = "OR"
-)

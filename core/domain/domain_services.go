@@ -6,5 +6,5 @@ type AuthenticationService interface {
 }
 
 type SessionService interface {
-	RecoverSession(sessionID Uuid) (Session, error)
+	RecoverSession(sessionID string) (Session, error)
 }

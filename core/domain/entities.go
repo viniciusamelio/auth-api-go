@@ -10,11 +10,11 @@ type Credentials struct {
 type User struct {
 	Email string
 	Name  string
-	Id    Uuid
+	Id    string
 }
 
 type Session struct {
-	SessionID Uuid
+	SessionID string
 	User      User
 	ExpiresAt time.Time
 	Active    bool
@@ -28,6 +28,6 @@ func (self Session) isExpired() bool {
 func (self *Session) clean() {
 	self.User = User{}
 	self.ExpiresAt = time.Time{}
-	self.SessionID = Uuid{}
+	self.SessionID = ""
 	self.Active = false
 }

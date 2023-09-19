@@ -6,6 +6,10 @@ import (
 	"gorm.io/gorm"
 )
 
+type Schema struct {
+	gorm.Model
+}
+
 type User struct {
 	gorm.Model
 	Name      string
@@ -17,6 +21,7 @@ type User struct {
 }
 
 type Session struct {
+	gorm.Model
 	Id        string `gorm:"primaryKey"`
 	Token     string
 	UserId    string

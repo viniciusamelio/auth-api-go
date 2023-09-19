@@ -7,6 +7,6 @@ type AuthRepository interface {
 
 type SessionRepository interface {
 	CreateSession(user User) (Session, error)
-	GetSession(sessionID Uuid) (Session, error)
-	SignOut(sessionID Uuid) error
+	GetSession(sessionID string) (Session, error)
+	SignOut(sessionID string) error
 }
