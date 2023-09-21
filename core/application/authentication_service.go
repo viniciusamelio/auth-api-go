@@ -13,12 +13,12 @@ func (this *DefaultAuthenticationService) New(AuthRepository domain.AuthReposito
 }
 
 func (this *DefaultAuthenticationService) Authenticate(credentials domain.Credentials) (domain.Session, error) {
-	_, error := this.authRepository.SignIn(credentials)
-
+	user, error := this.authRepository.SignIn(credentials)
 	if error != nil {
 		return domain.Session{}, error
 	}
-	return domain.Session{}, error
+	session, error := this.sessionRepository.CreateSession(user)
+	return session, error
 
 }
 func (this *DefaultAuthenticationService) Logout(session domain.Session) error {
