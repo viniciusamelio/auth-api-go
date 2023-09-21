@@ -14,7 +14,7 @@ type User struct {
 }
 
 type Session struct {
-	SessionID string
+	Id        string
 	User      User
 	ExpiresAt time.Time
 	Active    bool
@@ -28,6 +28,6 @@ func (self Session) isExpired() bool {
 func (self *Session) clean() {
 	self.User = User{}
 	self.ExpiresAt = time.Time{}
-	self.SessionID = ""
+	self.Id = ""
 	self.Active = false
 }

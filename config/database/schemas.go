@@ -12,21 +12,21 @@ type Schema struct {
 
 type User struct {
 	gorm.Model
-	Name      string
-	Hash      string
-	Email     string
-	Id        string `gorm:"primaryKey"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	Name      string    `json:"name"`
+	Hash      string    `json:"hash"`
+	Email     string    `json:"email"`
+	Id        string    `gorm:"primaryKey" json:"id"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 type Session struct {
 	gorm.Model
-	Id        string `gorm:"primaryKey"`
-	Token     string
-	UserId    string
-	Active    bool
-	ExpiresAt time.Time
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	Id        string    `gorm:"primaryKey"`
+	Token     string    `json:"token"`
+	UserId    string    `json:"user_id"`
+	Active    bool      `json:"active"`
+	ExpiresAt time.Time `json:"expires_at"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }

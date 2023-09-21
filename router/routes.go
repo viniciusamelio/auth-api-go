@@ -40,4 +40,8 @@ func authRoutes(runner *gin.Engine) {
 			"success": true,
 		})
 	})
+
+	runner.POST(prefix+"/signup", func(context *gin.Context) {
+
+	})
 }

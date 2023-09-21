@@ -4,7 +4,9 @@ import (
 	"auth_api/config/database"
 	"auth_api/core"
 	domain "auth_api/core/domain"
+	"time"
 
+	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -37,5 +39,31 @@ func (this *DefaultAuthRepository) SignIn(credentials domain.Credentials) (domai
 	}, nil
 }
 func (this *DefaultAuthRepository) SignUp(credentials domain.Credentials, user domain.User) (domain.User, error) {
-	return user, nil
+	hashedPassword, error := bcrypt.GenerateFromPassword([]byte(credentials.Password), bcrypt.DefaultCost)
+	if error != nil {
+		return domain.User{}, error
+	}
+	userDto := database.User{
+		Email:     credentials.Username,
+		Name:      user.Name,
+		Hash:      string(hashedPassword),
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+		Id:        uuid.NewString(),
+	}
+
+	result := this.Database.Save(
+		&userDto,
+	)
+	if result.Error != nil {
+		defaultError := core.DefaultError{}
+		defaultError.SetMessage("User not found")
+		return domain.User{}, defaultError
+	}
+
+	return domain.User{
+		Id:    userDto.Id,
+		Name:  userDto.Name,
+		Email: userDto.Email,
+	}, nil
 }
