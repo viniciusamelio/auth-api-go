@@ -12,10 +12,10 @@ type ApplicationAuthenticationService interface {
 }
 
 type AuthenticationService struct {
-	authenticationService domain.AuthenticationService
+	authenticationService domain.DomainAuthenticationService
 }
 
-func (this *AuthenticationService) New(AuthenticationService domain.AuthenticationService) {
+func (this *AuthenticationService) New(AuthenticationService domain.DomainAuthenticationService) {
 	this.authenticationService = AuthenticationService
 }
 

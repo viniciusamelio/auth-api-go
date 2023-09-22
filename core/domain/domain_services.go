@@ -4,6 +4,12 @@ import (
 	"auth_api/core"
 )
 
+type DomainAuthenticationService interface {
+	Authenticate(Credentials Credentials) (Session, error)
+	SignUp(Credentials Credentials, User User) (User, error)
+	Logout(Session Session) error
+}
+
 // Authentication domain service
 type AuthenticationService struct {
 	authRepository    AuthRepository

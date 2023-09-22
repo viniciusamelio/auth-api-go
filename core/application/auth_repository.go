@@ -57,7 +57,7 @@ func (this *DefaultAuthRepository) SignUp(credentials domain.Credentials, user d
 	)
 	if result.Error != nil {
 		defaultError := core.DefaultError{}
-		defaultError.SetMessage("User not found")
+		defaultError.SetMessage("User could not be created")
 		return domain.User{}, defaultError
 	}
 
