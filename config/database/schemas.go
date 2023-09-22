@@ -14,7 +14,7 @@ type User struct {
 	gorm.Model
 	Name      string    `json:"name"`
 	Hash      string    `json:"hash"`
-	Email     string    `json:"email"`
+	Email     string    `json:"email" gorm:"index:unique"`
 	Id        string    `gorm:"primaryKey" json:"id"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`

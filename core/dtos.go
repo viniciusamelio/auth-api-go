@@ -20,3 +20,10 @@ type SessionDto struct {
 	Active    bool      `json:"active"`
 	Token     string    `json:"token"`
 }
+
+type SignUpDto struct {
+	Email    string `json:"email"`
+	Name     string `json:"name"`
+	Id       string `json:"id"`
+	Password string `json:"password"`
+}

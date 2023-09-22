@@ -5,6 +5,12 @@ import (
 	"auth_api/core/domain"
 )
 
+type ApplicationAuthenticationService interface {
+	SignIn(Credentials core.CredentialsDto) (core.SessionDto, error)
+	SignOut(Session core.SessionDto) error
+	SignUp(Data core.SignUpDto) (core.UserDto, error)
+}
+
 type AuthenticationService struct {
 	authenticationService domain.AuthenticationService
 }
@@ -45,4 +51,24 @@ func (this *AuthenticationService) SignOut(Session core.SessionDto) error {
 		return error
 	}
 	return nil
+}
+
+func (this *AuthenticationService) SignUp(Data core.SignUpDto) (core.UserDto, error) {
+	user, error := this.authenticationService.SignUp(domain.Credentials{
+		Username: Data.Email,
+		Password: Data.Password,
+	}, domain.User{
+		Name:  Data.Name,
+		Email: Data.Email,
+	})
+
+	if error != nil {
+		return core.UserDto{}, error
+	}
+
+	return core.UserDto{
+		Email: user.Email,
+		Name:  user.Name,
+		Id:    user.Id,
+	}, nil
 }

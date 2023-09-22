@@ -42,7 +42,7 @@ func (this *DefaultSessionRepository) CreateSession(user domain.User) (domain.Se
 func (this *DefaultSessionRepository) GetSession(sessionID string) (domain.Session, error) {
 	var sessionDto database.Session
 	var userDto database.User
-	result := this.DatabaseDatasource.Select("*").First(&sessionDto)
+	result := this.DatabaseDatasource.Select("*").Where("id = ?", sessionID).First(&sessionDto)
 	if result.Error != nil {
 		defaultError := core.DefaultError{}
 		defaultError.SetMessage("Invalid session")
@@ -77,6 +77,7 @@ func (this *DefaultSessionRepository) SignOut(sessionID string) error {
 
 	sessionDto.Active = false
 	sessionDto.ExpiresAt = time.Now()
+	sessionDto.UpdatedAt = time.Now()
 
 	result := this.DatabaseDatasource.Save(&sessionDto)
 

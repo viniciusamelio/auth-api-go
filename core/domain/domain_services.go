@@ -1,5 +1,9 @@
 package domain
 
+import (
+	"auth_api/core"
+)
+
 // Authentication domain service
 type AuthenticationService struct {
 	authRepository    AuthRepository
@@ -28,6 +32,14 @@ func (this *AuthenticationService) Logout(Session Session) error {
 	return nil
 }
 
+func (this *AuthenticationService) SignUp(Credentials Credentials, User User) (User, error) {
+	user, error := this.authRepository.SignUp(Credentials, User)
+	if error != nil {
+		return User, error
+	}
+	return user, nil
+}
+
 // Session domain service
 type SessionService struct {
 	sessionRepository SessionRepository
@@ -39,5 +51,19 @@ func (this *SessionService) New(SessionRepository SessionRepository) {
 
 func (this *SessionService) RecoverSession(SessionID string) (Session, error) {
 	session, error := this.sessionRepository.GetSession(SessionID)
-	return session, error
+	if error != nil {
+		return Session{}, error
+	}
+	if session.isExpired() && session.Active {
+		error := this.sessionRepository.SignOut(session.Id)
+		if error != nil {
+			return Session{}, core.DefaultError{
+				Message: "Session could not be expired",
+			}
+		}
+		return Session{}, core.DefaultError{
+			Message: "Invalid session",
+		}
+	}
+	return session, nil
 }

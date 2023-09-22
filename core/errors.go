@@ -2,6 +2,7 @@ package core
 
 type DefaultError struct {
 	Message string
+	Code    int
 }
 
 func (self DefaultError) Error() string {
