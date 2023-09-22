@@ -11,8 +11,8 @@ func (this *AuthenticationService) New(AuthRepository AuthRepository, SessionRep
 	this.sessionRepository = SessionRepository
 }
 
-func (this *AuthenticationService) Authenticate(credentials Credentials) (Session, error) {
-	user, error := this.authRepository.SignIn(credentials)
+func (this *AuthenticationService) Authenticate(Credentials Credentials) (Session, error) {
+	user, error := this.authRepository.SignIn(Credentials)
 	if error != nil {
 		return Session{}, error
 	}
@@ -20,8 +20,8 @@ func (this *AuthenticationService) Authenticate(credentials Credentials) (Sessio
 	return session, error
 
 }
-func (this *AuthenticationService) Logout(session Session) error {
-	error := this.sessionRepository.SignOut(session.Id)
+func (this *AuthenticationService) Logout(Session Session) error {
+	error := this.sessionRepository.SignOut(Session.Id)
 	if error != nil {
 		return error
 	}
@@ -33,7 +33,11 @@ type SessionService struct {
 	sessionRepository SessionRepository
 }
 
-func (this *SessionService) RecoverSession(sessionID string) (Session, error) {
-	session, error := this.sessionRepository.GetSession(sessionID)
+func (this *SessionService) New(SessionRepository SessionRepository) {
+	this.sessionRepository = SessionRepository
+}
+
+func (this *SessionService) RecoverSession(SessionID string) (Session, error) {
+	session, error := this.sessionRepository.GetSession(SessionID)
 	return session, error
 }
