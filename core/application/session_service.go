@@ -9,6 +9,10 @@ type SessionService struct {
 	sessionService domain.SessionService
 }
 
+func (this *SessionService) New(sessionService domain.SessionService) {
+	this.sessionService = sessionService
+}
+
 func (this *SessionService) GetSession(SessionId string) (core.SessionDto, error) {
 	session, error := this.sessionService.RecoverSession(SessionId)
 	if error != nil {

@@ -1,8 +1,6 @@
 package domain
 
-import (
-	"auth_api/core"
-)
+import "auth_api/core"
 
 type DomainAuthenticationService interface {
 	Authenticate(Credentials Credentials) (Session, error)

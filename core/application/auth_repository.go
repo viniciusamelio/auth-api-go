@@ -15,7 +15,7 @@ type DefaultAuthRepository struct {
 }
 
 func (this *DefaultAuthRepository) SignIn(credentials domain.Credentials) (domain.User, error) {
-	var userSchema database.User
+	userSchema := database.User{}
 	result := this.Database.Select("id", "hash").Where("email = ?", credentials.Username).First(&userSchema)
 	if result.Error != nil {
 		defaultError := core.DefaultError{}
@@ -50,6 +50,14 @@ func (this *DefaultAuthRepository) SignUp(credentials domain.Credentials, user d
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 		Id:        uuid.NewString(),
+	}
+
+	var searchUserDto database.User
+	searchResult := this.Database.Where("email = ?", userDto.Email).Find(&searchUserDto)
+	if searchResult.RowsAffected > 0 {
+		return domain.User{}, core.DefaultError{
+			Message: "User already exists",
+		}
 	}
 
 	result := this.Database.Save(
