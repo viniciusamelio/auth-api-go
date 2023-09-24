@@ -12,5 +12,6 @@ func Init() {
 		})
 	})
 	authRoutes(runner)
+	sessionRoutes(runner)
 	runner.Run()
 }

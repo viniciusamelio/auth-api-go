@@ -27,3 +27,13 @@ func NewAuthenticationService() application.ApplicationAuthenticationService {
 	)
 	return instance
 }
+
+func NewSessionService() application.ApplicationSessionService {
+	instance := &application.SessionService{}
+	domainSessionService := domain.SessionService{}
+	domainSessionService.New(NewSessionRepository())
+	instance.New(
+		domainSessionService,
+	)
+	return instance
+}

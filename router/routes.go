@@ -52,3 +52,25 @@ func authRoutes(runner *gin.Engine) {
 
 	})
 }
+
+func sessionRoutes(runner *gin.Engine) {
+	const prefix = "/session"
+
+	runner.GET(prefix+"/:id", func(context *gin.Context) {
+		sessionService := dependencies.NewSessionService()
+		session, error := sessionService.GetSession(context.Param("id"))
+
+		if error != nil {
+			context.JSON(400, gin.H{
+				"error":   error.Error(),
+				"success": false,
+			})
+			return
+		}
+
+		context.JSON(200, gin.H{
+			"session": session,
+			"success": true,
+		})
+	})
+}

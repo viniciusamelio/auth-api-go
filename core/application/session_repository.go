@@ -42,13 +42,13 @@ func (this *DefaultSessionRepository) CreateSession(user domain.User) (domain.Se
 func (this *DefaultSessionRepository) GetSession(sessionID string) (domain.Session, error) {
 	var sessionDto database.Session
 	var userDto database.User
-	result := this.DatabaseDatasource.Select("*").Where("id = ?", sessionID).First(&sessionDto)
+	result := this.DatabaseDatasource.Where("id = ?", sessionID).First(&sessionDto)
 	if result.Error != nil {
 		defaultError := core.DefaultError{}
 		defaultError.SetMessage("Invalid session")
 		return domain.Session{}, defaultError
 	}
-	userQueryResult := this.DatabaseDatasource.Select("*").Where("id = ?", sessionDto.UserId).First(&userDto)
+	userQueryResult := this.DatabaseDatasource.Where("id = ?", sessionDto.UserId).First(&userDto)
 	if userQueryResult.Error != nil {
 		defaultError := core.DefaultError{}
 		defaultError.SetMessage("Invalid session")
@@ -68,18 +68,22 @@ func (this *DefaultSessionRepository) GetSession(sessionID string) (domain.Sessi
 }
 func (this *DefaultSessionRepository) SignOut(sessionID string) (bool, error) {
 	var sessionDto database.Session
-	foundSession := this.DatabaseDatasource.Select("*").Where("id = ?", sessionID).First(sessionDto)
+	foundSession := this.DatabaseDatasource.Select("*").Where("id = ?", sessionID).First(&sessionDto)
 	if foundSession.Error != nil {
 		defaultError := core.DefaultError{}
 		defaultError.SetMessage("Invalid session")
 		return false, defaultError
 	}
 
-	sessionDto.Active = false
-	sessionDto.ExpiresAt = time.Now()
-	sessionDto.UpdatedAt = time.Now()
-
-	result := this.DatabaseDatasource.Save(&sessionDto)
+	result := this.DatabaseDatasource.Save(database.Session{
+		Id:        sessionDto.Id,
+		UserId:    sessionDto.UserId,
+		Active:    false,
+		Token:     sessionDto.Token,
+		ExpiresAt: time.Now(),
+		UpdatedAt: time.Now(),
+		CreatedAt: sessionDto.CreatedAt,
+	})
 
 	if result.Error != nil {
 		defaultError := core.DefaultError{}

@@ -5,6 +5,10 @@ import (
 	domain "auth_api/core/domain"
 )
 
+type ApplicationSessionService interface {
+	GetSession(SessionId string) (core.SessionDto, error)
+}
+
 type SessionService struct {
 	sessionService domain.SessionService
 }
