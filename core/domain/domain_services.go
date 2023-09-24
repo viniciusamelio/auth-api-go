@@ -5,7 +5,7 @@ import "auth_api/core"
 type DomainAuthenticationService interface {
 	Authenticate(Credentials Credentials) (Session, error)
 	SignUp(Credentials Credentials, User User) (User, error)
-	Logout(Session Session) error
+	Logout(Session Session) (bool, error)
 }
 
 // Authentication domain service
@@ -28,12 +28,12 @@ func (this *AuthenticationService) Authenticate(Credentials Credentials) (Sessio
 	return session, error
 
 }
-func (this *AuthenticationService) Logout(Session Session) error {
-	error := this.sessionRepository.SignOut(Session.Id)
+func (this *AuthenticationService) Logout(Session Session) (bool, error) {
+	_, error := this.sessionRepository.SignOut(Session.Id)
 	if error != nil {
-		return error
+		return false, error
 	}
-	return nil
+	return true, nil
 }
 
 func (this *AuthenticationService) SignUp(Credentials Credentials, User User) (User, error) {
@@ -59,8 +59,8 @@ func (this *SessionService) RecoverSession(SessionID string) (Session, error) {
 		return Session{}, error
 	}
 	if session.isExpired() && session.Active {
-		error := this.sessionRepository.SignOut(session.Id)
-		if error != nil {
+		success, _ := this.sessionRepository.SignOut(session.Id)
+		if !success {
 			return Session{}, core.DefaultError{
 				Message: "Session could not be expired",
 			}

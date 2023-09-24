@@ -66,13 +66,13 @@ func (this *DefaultSessionRepository) GetSession(sessionID string) (domain.Sessi
 		Token:     sessionDto.Token,
 	}, nil
 }
-func (this *DefaultSessionRepository) SignOut(sessionID string) error {
+func (this *DefaultSessionRepository) SignOut(sessionID string) (bool, error) {
 	var sessionDto database.Session
 	foundSession := this.DatabaseDatasource.Select("*").Where("id = ?", sessionID).First(sessionDto)
 	if foundSession.Error != nil {
 		defaultError := core.DefaultError{}
 		defaultError.SetMessage("Invalid session")
-		return defaultError
+		return false, defaultError
 	}
 
 	sessionDto.Active = false
@@ -84,8 +84,8 @@ func (this *DefaultSessionRepository) SignOut(sessionID string) error {
 	if result.Error != nil {
 		defaultError := core.DefaultError{}
 		defaultError.SetMessage("Session could not be expired")
-		return defaultError
+		return false, defaultError
 	}
 
-	return nil
+	return true, core.DefaultError{}
 }

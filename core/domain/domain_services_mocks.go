@@ -27,7 +27,7 @@ func (this *mockSessionRepository) GetSession(sessionID string) (Session, error)
 	args := this.Called(sessionID)
 	return args.Get(0).(Session), args.Error(1)
 }
-func (this *mockSessionRepository) SignOut(sessionID string) error {
+func (this *mockSessionRepository) SignOut(sessionID string) (bool, error) {
 	args := this.Called(sessionID)
-	return args.Get(0).(error)
+	return args.Get(0).(bool), args.Get(1).(error)
 }

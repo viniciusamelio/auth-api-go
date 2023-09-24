@@ -7,7 +7,7 @@ import (
 
 type ApplicationAuthenticationService interface {
 	SignIn(Credentials core.CredentialsDto) (core.SessionDto, error)
-	SignOut(Session core.SessionDto) error
+	SignOut(Session core.SessionDto) (bool, error)
 	SignUp(Data core.SignUpDto) (core.UserDto, error)
 }
 
@@ -40,17 +40,17 @@ func (this *AuthenticationService) SignIn(Credentials core.CredentialsDto) (core
 		Token:     session.Token,
 	}, nil
 }
-func (this *AuthenticationService) SignOut(Session core.SessionDto) error {
-	error := this.authenticationService.Logout(
+func (this *AuthenticationService) SignOut(Session core.SessionDto) (bool, error) {
+	_, error := this.authenticationService.Logout(
 		domain.Session{
 			Id: Session.Id,
 		},
 	)
 
 	if error != nil {
-		return error
+		return false, error
 	}
-	return nil
+	return true, nil
 }
 
 func (this *AuthenticationService) SignUp(Data core.SignUpDto) (core.UserDto, error) {
