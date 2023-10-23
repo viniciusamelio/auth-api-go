@@ -1,8 +1,8 @@
 package main
 
 import (
-	"auth_api/config"
-	"auth_api/router"
+	"auth_api/internal/config"
+	"auth_api/internal/router"
 	"log"
 	"os"
 

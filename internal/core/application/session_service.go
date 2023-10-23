@@ -1,8 +1,8 @@
 package application
 
 import (
-	"auth_api/core"
-	domain "auth_api/core/domain"
+	"auth_api/internal/core"
+	domain "auth_api/internal/core/domain"
 )
 
 type ApplicationSessionService interface {

@@ -1,9 +1,9 @@
 package application
 
 import (
-	"auth_api/config/database"
-	"auth_api/core"
-	domain "auth_api/core/domain"
+	"auth_api/internal/config/database"
+	"auth_api/internal/core"
+	domain "auth_api/internal/core/domain"
 	"time"
 
 	"github.com/google/uuid"

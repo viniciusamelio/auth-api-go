@@ -1,9 +1,9 @@
 package dependencies
 
 import (
-	"auth_api/config"
-	"auth_api/core/application"
-	"auth_api/core/domain"
+	config "auth_api/internal/config"
+	application "auth_api/internal/core/application"
+	domain "auth_api/internal/core/domain"
 )
 
 func NewAuthRepository() domain.AuthRepository {

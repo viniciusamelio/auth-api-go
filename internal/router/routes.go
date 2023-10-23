@@ -1,8 +1,8 @@
 package router
 
 import (
-	"auth_api/core"
-	dependencies "auth_api/di"
+	"auth_api/internal/core"
+	dependencies "auth_api/internal/di"
 
 	"github.com/gin-gonic/gin"
 )

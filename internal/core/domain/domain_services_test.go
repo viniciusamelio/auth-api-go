@@ -1,7 +1,7 @@
 package domain
 
 import (
-	"auth_api/core"
+	"auth_api/internal/core"
 	"testing"
 	"time"
 

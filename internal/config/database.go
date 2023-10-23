@@ -1,7 +1,7 @@
 package config
 
 import (
-	"auth_api/config/database"
+	"auth_api/internal/config/database"
 	"os"
 
 	"gorm.io/driver/mysql"
