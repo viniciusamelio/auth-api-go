@@ -216,13 +216,37 @@ func TestSUTShouldReturnErrorWhenSessionRepoReturnsASessionButItIsExpiredAndSign
 	assert.Equal(t, "Session could not be expired", error.Error())
 }
 
-func TestSUTShouldReturnErrorWhenSessionRepoReturnsASessionButItIsExpired(t *testing.T) {
+func TestSUTShouldReturnErrorWhenSessionRepoReturnsASessionWhichIsActiveButExpired(t *testing.T) {
 	sessionRepo := new(mockSessionRepository)
 	sessionId := faker.UUIDHyphenated()
 	sessionRepo.On("GetSession", mock.Anything).Return(
 		Session{
 			Id:        sessionId,
 			Active:    true,
+			Token:     faker.UUIDHyphenated(),
+			ExpiresAt: time.Now().AddDate(-1, 0, 0),
+		}, nil,
+	)
+	sessionRepo.On("SignOut", sessionId).Return(
+		true, core.DefaultError{},
+	)
+	sut := SessionService{
+		sessionRepository: sessionRepo,
+	}
+
+	_, error := sut.RecoverSession(faker.UUIDHyphenated())
+
+	assert.NotNil(t, error)
+	assert.Equal(t, "Invalid session", error.Error())
+}
+
+func TestSUTShouldReturnErrorWhenSessionRepoReturnsAnExpiredSession(t *testing.T) {
+	sessionRepo := new(mockSessionRepository)
+	sessionId := faker.UUIDHyphenated()
+	sessionRepo.On("GetSession", mock.Anything).Return(
+		Session{
+			Id:        sessionId,
+			Active:    false,
 			Token:     faker.UUIDHyphenated(),
 			ExpiresAt: time.Now().AddDate(-1, 0, 0),
 		}, nil,

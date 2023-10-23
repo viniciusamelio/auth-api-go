@@ -68,6 +68,10 @@ func (this *SessionService) RecoverSession(SessionID string) (Session, error) {
 		return Session{}, core.DefaultError{
 			Message: "Invalid session",
 		}
+	} else if session.isExpired() {
+		return Session{}, core.DefaultError{
+			Message: "Invalid session",
+		}
 	}
 	return session, nil
 }
